@@ -45,30 +45,46 @@ class FFieldElement:
         )
 
     def __add__(self, another):
-        assert self.ffield == another.ffield
+        if isinstance(another, FFieldElement):
+            assert self.ffield == another.ffield
+            other_val = another.value
+        else:
+            other_val = another
         return FFieldElement(
             self.ffield,
-            (self.value + another.value) % self.ffield.module
+            (self.value + other_val) % self.ffield.module
         )
 
     def __sub__(self, another):
-        assert self.ffield == another.ffield
+        if isinstance(another, FFieldElement):
+            assert self.ffield == another.ffield
+            other_val = another.value
+        else:
+            other_val = another
         return FFieldElement(
             self.ffield,
-            (self.value - another.value) % self.ffield.module
+            (self.value - other_val) % self.ffield.module
         )
 
     def __mul__(self, another):
-        assert self.ffield == another.ffield
+        if isinstance(another, FFieldElement):
+            assert self.ffield == another.ffield
+            other_val = another.value
+        else:
+            other_val = another
         return FFieldElement(
             self.ffield,
-            (self.value * another.value) % self.ffield.module
+            (self.value * other_val) % self.ffield.module
         )
 
     def __div__(self, another):
-        assert self.ffield == another.ffield
-        assert another.value != 0
-        _, x, _ = xgcd(another.value, self.ffield.module)
+        if isinstance(another, FFieldElement):
+            assert self.ffield == another.ffield
+            other_val = another.value
+        else:
+            other_val = another
+        assert other_val != 0
+        _, x, _ = xgcd(other_val, self.ffield.module)
         return FFieldElement(
             self.ffield,
             (self.value * x) % self.ffield.module
