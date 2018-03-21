@@ -1,4 +1,5 @@
 import json
+import requests
 from ffield import FField, FFieldElement as FFElem
 
 ffield = FField(11953696440786470837)
@@ -50,8 +51,12 @@ def transpose(A):
     return transpose
 
 def main():
-    secrets = json.load(open('local-shares.json', 'r'))
-    shares = secrets[1]
+    # content = requests.get("http://localhost:3000").content.decode()
+    content = requests.get("http://6857blakley.csail.mit.edu").content.decode()
+    resp = json.loads(content)
+    print "ID:", resp[0]
+    print "Shares:", resp[1]
+    shares = resp[1]
     for i in xrange(len(shares)):
         shares[i][0] = FFElem(ffield, shares[i][0])
         shares[i][1] = FFElem(ffield, shares[i][1])
